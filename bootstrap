@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# Set up a fresh install with the minimum requirements for Ansible. Except for
-# non-root Termux, start with root user for brevity.
+# Set up a fresh system with the minimum requirements for remote configuraiton
+# with Ansible. Except for # non-root Termux, start with root user.
 
 set -e
 
@@ -69,7 +69,7 @@ case "$os" in
     *alpine*)
         rc-service sshd restart ;;
     *termux*)
-        sv restart sshd ;;
+        sv start sshd ;;
 esac
 
 
