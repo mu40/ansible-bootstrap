@@ -1,0 +1,84 @@
+#!/bin/sh
+
+# Set up a fresh install with the minimum requirements for Ansible. Except for
+# non-root Termux, start with root user for brevity.
+
+set -e
+
+
+# System detection (`uname -r` no good for WSL).
+for f in /bsd /etc/*-release /data/data/com.termux; do
+    if [ -e "$f" ]; then
+        os="$f"
+        break
+    fi
+done
+
+
+# Requirements.
+case "$os" in
+    /bsd)
+        pkg_add -u
+        pkg_add python3
+    ;;
+    /etc/arch-release)
+        pacman --noconfirm -Syu
+        pacman --noconfirm -S openssh python
+    ;;
+    /etc/alpine-release)
+        apk -U upgrade
+        apk add curl openssh python3
+    ;;
+    /etc/fedora-release)
+        dnf -y upgrade
+        dnf -y install openssh python3
+    ;;
+    /data/data/com.termux)
+        pkg upgrade -y -o "Dpkg::Options::=--force-confnew"
+        pkg install -y --no-install-recommends openssh python termux-services
+    ;;
+    *)
+        echo "ERROR: system not supported"
+        exit 1
+    ;;
+esac
+
+
+# SSH public key.
+d=~/.ssh
+mkdir -p $d
+curl -L https://github.com/mu40.keys | awk '/hh$/' >$d/authorized_keys
+chmod -R u=rwX,go= $d
+
+
+# SSH root login. Termux hard-codes non-root user.
+if [ "$os" != /data/data/com.termux ]; then
+    f=/etc/ssh/sshd_config
+    [ -f $f.bak ] || cp $f $f.bak
+    sed 's/^#*\(PermitRootLogin\) [a-z-]*$/\1 prohibit-password/' $f.bak >$f
+fi
+
+
+# SSH daemon. Generate host keys if needed.
+ssh-keygen -A
+case "$os" in
+    *bsd*)
+        rcctl restart sshd ;;
+    *arch*|*fedora*)
+        systemctl restart sshd ;;
+    *alpine*)
+        rc-service sshd restart ;;
+    *termux*)
+        sv restart sshd ;;
+esac
+
+
+# User name and IPs. Termux does not set $USER. Skip loopback device.
+{
+    echo "user: $(whoami)"
+    if command -v ip >/dev/null; then
+        ip a | awk '/^[^\t ]/ {f=$2} /inet / {sub(/\/.*/,"",$2); print f,$2}'
+    else
+        ifconfig 2>&1 | awk '/^[^\t ]/ {f=$1} /inet / {print f,$2}'
+    fi
+} | grep -v '^lo'
