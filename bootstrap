@@ -66,7 +66,7 @@ fi
 # Ansible's service module can control the daemon. Enable service, as it will
 # only run while Termux is running, and aquire wake lock to ensure we can
 # connect: release it with `termux-wake-unlock` or in the notification panel.
-# Prompt restart at end, as `sv` will not work in current shell without it.
+# Using `sv` will require restart to export SVDIR and LOGDIR.
 ssh-keygen -A
 case "$os" in
     /bsd)
@@ -84,7 +84,6 @@ case "$os" in
         service-daemon start || true
         sv-enable sshd
         termux-wake-lock
-        trap 'echo "Press Enter to quit, then restart."; read -r; exit 0;' EXIT
     ;;
 esac
 
