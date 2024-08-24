@@ -45,13 +45,15 @@ jobs:
         } >Dockerfile
     - name: Build Docker image
       run: docker build -t fedora-image .
-    - name: Run systemd in container
+    - name: Launch systemd
       run: docker run -d --privileged=true --name Mickey fedora-image
-    - name: Show debug output
+    - name: Wait for systemd
       run: |
-        pwd -P
-        ls -lh
-        docker exec Mickey ls -lh
-        docker exec Mickey pwd -P
+        count=0
+        until [ "$count" -eq 30 ] || [ "$out" = running ]; do
+          sleep 1
+          count=$((count + 1))
+          out=$(docker exec Mickey systemctl is-system-running)
+        done
     - name: Test bootstrapping
       run: docker exec Mickey sh -x bootstrap
