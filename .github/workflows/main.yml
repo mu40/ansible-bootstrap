@@ -48,7 +48,7 @@ jobs:
     - name: Launch systemd
       run: docker run \
         -d \
-        -v /sys/fs/cgroup \
+        -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
         --privileged=true \
         --name Mickey \
         fedora-image
