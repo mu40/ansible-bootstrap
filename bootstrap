@@ -36,7 +36,8 @@ case "$os" in
     ;;
     /data/data/com.termux)
         pkg upgrade -y -o "Dpkg::Options::=--force-confnew"
-        pkg install -y openssh python python-apt termux-services
+        pkg install -y --no-install-recommends \
+            openssh python python-apt termux-services
     ;;
     *)
         echo "ERROR: system not supported"
