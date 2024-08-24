@@ -60,11 +60,11 @@ if [ "$os" != /data/data/com.termux ]; then
 fi
 
 
-# SSH daemon. Generate host keys if needed. Termux starts runit when sourcing
-# $PREFIX/etc/profile.d/start-services.sh. Manually start it here to launch
-# sshd without restarting Termux. Preferred over directly invoking `sshd` so
-# Ansible's service module can control the daemon. Enable service, as it will
-# only run while Termux is running, and acquire wake lock to ensure we can
+# SSH daemon. Generate host keys if needed. Termux starts runit by sourcing
+# $PREFIX/etc/profile.d/start-services.sh. Manually start it to launch sshd
+# without Termux restart. Preferred over directly invoking `sshd` so Ansible's
+# service module can manage the daemon. Enable and start with `sv-enable`, as
+# it will only run while Termux is running. Acquire wake lock to ensure we can
 # connect: release it with `termux-wake-unlock` or in the notification panel.
 # Using `sv` will require restart to export SVDIR and LOGDIR.
 ssh-keygen -A
@@ -80,7 +80,7 @@ case "$os" in
     ;;
     /data/data/com.termux)
         . $PREFIX/etc/profile.d/start-services.sh
-        sleep 5
+        until [ -e $SVDIR/sshd ]; do sleep 1; done
         sv-enable sshd
         termux-wake-lock
     ;;
