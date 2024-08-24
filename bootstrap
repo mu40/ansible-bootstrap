@@ -4,6 +4,7 @@
 # with Ansible. Except for # non-root Termux, start with root user.
 
 set -e
+github_user=${1:-'mu40'}
 
 
 # System detection (`uname -r` no good for WSL).
@@ -47,12 +48,20 @@ esac
 # SSH public key.
 d=~/.ssh
 mkdir -p $d
-curl -L https://github.com/mu40.keys | awk '/hh$/' >$d/authorized_keys
+curl -L "https://github.com/$github_user.keys" >$d/authorized_keys
 chmod -R u=rwX,go= $d
 
 
-# SSH root login. Termux hard-codes non-root user.
-if [ "$os" != /data/data/com.termux ]; then
+# SSH root login. Termux hard-codes non-root user but relies on sourcing script
+# to start runit and set up environment to use it in the shell. Enable service,
+# which will only run while Termux is running. Aquire wake lock to ensure we
+# can connect: when done, disable it in the notification panel.
+if [ "$os" = /data/data/com.termux ]; then
+    . "$PREFIX/etc/profile.d/start-services.sh"
+    sv-enable sshd
+    termux-wake-lock
+    trap 'echo "Press any key, then restart Termux."; read -rn1; exit 0;' EXIT
+else
     f=/etc/ssh/sshd_config
     [ -f $f.bak ] || cp $f $f.bak
     sed 's/^#*\(PermitRootLogin\) [a-z-]*$/\1 prohibit-password/' $f.bak >$f
@@ -62,13 +71,13 @@ fi
 # SSH daemon. Generate host keys if needed.
 ssh-keygen -A
 case "$os" in
-    *bsd*)
+    /bsd)
         rcctl restart sshd ;;
-    *arch*|*fedora*)
+    /etc/arch-release|/etc/fedora-release)
         systemctl restart sshd ;;
-    *alpine*)
+    /etc/alpine-release)
         rc-service sshd restart ;;
-    *termux*)
+    /data/data/com.termux)
         sv start sshd ;;
 esac
 
