@@ -79,9 +79,8 @@ case "$os" in
         rc-service sshd restart
     ;;
     /data/data/com.termux)
-        export SVDIR=$PREFIX/var/service
-        export LOGDIR=$PREFIX/var/log
-        service-daemon start || true
+        . $PREFIX/etc/profile.d/start-services.sh
+        sleep 5
         sv-enable sshd
         termux-wake-lock
     ;;
