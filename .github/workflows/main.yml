@@ -18,7 +18,7 @@ jobs:
     container:
       image: alpine:latest
       volumes:
-      - /sys/fs/cgroup:ro
+      - /sys/fs/cgroup
     steps:
     - name: Check-out repository
       uses: actions/checkout@v4
@@ -34,7 +34,7 @@ jobs:
     container:
       image: fedora:latest
       volumes:
-      - /sys/fs/cgroup:ro
+      - /sys/fs/cgroup
     steps:
     - name: Check-out repository
       uses: actions/checkout@v4
