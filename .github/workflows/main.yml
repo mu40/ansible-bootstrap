@@ -14,13 +14,16 @@ on:
 jobs:
   alpine:
     runs-on: ubuntu-latest
-    container: alpine:latest
+    container:
+      image: alpine:latest
+      volumes:
+      - /sys/fs/cgroup
     steps:
     - name: Check-out repository
       uses: actions/checkout@v4
     - name: Install OpenRC
       run: apk add openrc
     - name: Start OpenRC
-      run: mkdir -p /run/openrc/softlevel && openrc default
+      run: touch /run/openrc/softlevel && openrc default
     - name: Test bootstrapping
       run: sh bootstrap
