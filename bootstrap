@@ -64,7 +64,7 @@ fi
 # $PREFIX/etc/profile.d/start-services.sh. Manually start it here to launch
 # sshd without restarting Termux. Preferred over directly invoking `sshd` so
 # Ansible's service module can control the daemon. Enable service, as it will
-# only run while Termux is running, and aquire wake lock to ensure we can
+# only run while Termux is running, and acquire wake lock to ensure we can
 # connect: release it with `termux-wake-unlock` or in the notification panel.
 # Using `sv` will require restart to export SVDIR and LOGDIR.
 ssh-keygen -A
