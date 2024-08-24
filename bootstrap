@@ -16,7 +16,7 @@ for f in /bsd /etc/*-release /data/data/com.termux; do
 done
 
 
-# Requirements.
+# Requirements. Save 0.5 GB with `--no-install-recommends.
 case "$os" in
     /bsd)
         pkg_add -u
@@ -32,7 +32,7 @@ case "$os" in
     ;;
     /etc/fedora-release)
         dnf -y upgrade
-        dnf -y install openssh python3
+        dnf -y install openssh-server python3
     ;;
     /data/data/com.termux)
         pkg upgrade -y -o "Dpkg::Options::=--force-confnew"
