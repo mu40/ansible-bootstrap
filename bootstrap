@@ -3,7 +3,7 @@
 # Set up a fresh system with the minimum requirements for remote configuration
 # with Ansible. Except for non-root Termux, start with root user.
 
-set -e
+set -ex
 github_user=${1:-'mu40'}
 
 
@@ -80,7 +80,7 @@ case "$os" in
     ;;
     /data/data/com.termux)
         . $PREFIX/etc/profile.d/start-services.sh
-        until [ -e $SVDIR/sshd ]; do sleep 1; done
+        until [ -e $SVDIR/sshd/supervise/ok ]; do sleep 1; done
         sv-enable sshd
         termux-wake-lock
     ;;
