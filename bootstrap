@@ -52,33 +52,40 @@ curl -L "https://github.com/$github_user.keys" >$d/authorized_keys
 chmod -R u=rwX,go= $d
 
 
-# SSH root login. Termux hard-codes non-root user but relies on sourcing script
-# to start runit and set up environment to use it in the shell. Enable service,
-# which will only run while Termux is running. Aquire wake lock to ensure we
-# can connect: when done, disable it in the notification panel.
-if [ "$os" = /data/data/com.termux ]; then
-    . "$PREFIX/etc/profile.d/start-services.sh"
-    sv-enable sshd
-    termux-wake-lock
-    trap 'echo "Press any key, then restart Termux."; read -rn1; exit 0;' EXIT
-else
+# SSH root login. Termux hard-codes non-root user.
+if [ "$os" != /data/data/com.termux ]; then
     f=/etc/ssh/sshd_config
     [ -f $f.bak ] || cp $f $f.bak
     sed 's/^#*\(PermitRootLogin\) [a-z-]*$/\1 prohibit-password/' $f.bak >$f
 fi
 
 
-# SSH daemon. Generate host keys if needed.
+# SSH daemon. Generate host keys if needed. Termux starts runit when sourcing
+# $PREFIX/etc/profile.d/start-services.sh. Manually start it here to launch
+# sshd without restarting Termux. Preferred over directly invoking `sshd` so
+# Ansible's service module can control the daemon. Enable service, as it will
+# only run while Termux is running, and aquire wake lock to ensure we can
+# connect: release it with `termux-wake-unlock` or in the notification panel.
+# Prompt restart at end, as `sv` will not work in current shell without it.
 ssh-keygen -A
 case "$os" in
     /bsd)
-        rcctl restart sshd ;;
+        rcctl restart sshd
+    ;;
     /etc/arch-release|/etc/fedora-release)
-        systemctl restart sshd ;;
+        systemctl restart sshd
+    ;;
     /etc/alpine-release)
-        rc-service sshd restart ;;
+        rc-service sshd restart
+    ;;
     /data/data/com.termux)
-        sv start sshd ;;
+        export SVDIR=$PREFIX/var/service
+        export LOGDIR=$PREFIX/var/log
+        service-daemon start || true
+        sv-enable sshd
+        termux-wake-lock
+        trap 'echo "Press Enter to quit, then restart."; read -r; exit 0;' EXIT
+    ;;
 esac
 
 
