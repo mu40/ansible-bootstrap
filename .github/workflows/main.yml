@@ -49,6 +49,7 @@ jobs:
       run: docker run -d --privileged=true --name Mickey fedora-image
     - name: Wait for systemd
       run: |
+        set -x
         count=0
         until [ "$count" -eq 30 ] || [ "$out" = running ]; do
           sleep 1
