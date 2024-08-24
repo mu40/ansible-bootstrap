@@ -9,12 +9,6 @@ The script will:
 - Display local IP addresses
 
 
-## Security
-
-It is risky to execute a script from an untrusted source on your machine as root.
-Your machine's security is your responsibility.
-
-
 ## Supported platforms
 
 - OpenBSD
@@ -40,3 +34,11 @@ Assuming your GitHub username is `otto`, authorize root login via SSH with your 
 ```sh
 curl -L bootstrap.malte.cz | sh -s -- otto
 ```
+
+
+## Security
+
+The script is not intended for public consumption or to ensure a secure SSH setup.
+Executing code from an untrusted source, especially as root, is risky.
+It might, for example, delete your data or send it elsewhere.
+The security of your machine and your data is your responsibility.
