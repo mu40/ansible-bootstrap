@@ -3,7 +3,7 @@
 # Set up a fresh system with the minimum requirements for remote configuration
 # with Ansible. Except for non-root Termux, start with root user.
 
-set -ex
+set -e
 github_user=${1:-'mu40'}
 
 
