@@ -31,12 +31,22 @@ jobs:
 
   fedora:
     runs-on: ubuntu-latest
-    container:
-      image: fedora:latest
-      volumes:
-      - /sys/fs/cgroup
     steps:
     - name: Check-out repository
       uses: actions/checkout@v4
+    - name: Create Dockerfile
+      run: |
+        {
+           echo "FROM fedora:latest"
+           echo "RUN dnf -y update && \"
+           echo "    dnf install -y systemd && \"
+           echo "    dnf clean all"
+           echo "WORKDIR ${{ github.workspace }}"
+           echo "ENTRYPOINT ['/sbin/init']"
+        } >Dockerfile
+    - name: Build Docker image
+      run: docker build -t fedora-image .
+    - name: Run systemd in container
+      run: docker run -d -v ${{ github.workspace }} --privileged=true --name mickey fedora-image
     - name: Test bootstrapping
-      run: sh -x bootstrap
+      run: docker exec mickey sh -x bootstrap
