@@ -48,13 +48,6 @@ jobs:
     - name: Launch systemd
       run: docker run -d --privileged=true --name Mickey fedora-image
     - name: Wait for systemd
-      run: |
-        set -x
-        count=0
-        until [ "$count" -eq 30 ] || [ "$out" = running ]; do
-          sleep 1
-          count=$((count + 1))
-          out=$(docker exec Mickey systemctl is-system-running)
-        done
+      run: timeout 30 sh -c 'until docker exec Mickey systemctl is-system-running; do sleep 3; done'
     - name: Test bootstrapping
       run: docker exec Mickey sh -x bootstrap
