@@ -24,6 +24,6 @@ jobs:
     - name: Install OpenRC
       run: apk add openrc
     - name: Start OpenRC
-      run: touch /run/openrc/softlevel && openrc default
+      run: mkdir -p /run/openrc/softlevel && openrc default
     - name: Test bootstrapping
       run: sh bootstrap
