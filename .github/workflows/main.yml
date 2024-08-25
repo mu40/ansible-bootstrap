@@ -25,7 +25,9 @@ jobs:
       run: mkdir -p /run/openrc/softlevel && openrc default
     - name: Test bootstrapping
       run: sh -x bootstrap
-  
+
+  # Restrict default 6 GB of RAM. Files at same path inside the VM as outside.
+  # Do not copy unneeded files back; we override the root SSH keys.
   openbsd:
     runs-on: ubuntu-latest
     steps:
