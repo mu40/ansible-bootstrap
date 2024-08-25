@@ -46,12 +46,13 @@ jobs:
     - name: Build Docker image
       run: docker build -t fedora-image .
     - name: Launch systemd
-      run: docker run \
-        -d \
-        -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
-        --privileged=true \
-        --name Mickey \
-        fedora-image
+      run: |
+        docker run \
+          -d \
+          -v /sys/fs/cgroup \
+          --privileged=true \
+          --name Mickey \
+          fedora-image
     - name: Wait for systemd
       run: timeout 30 sh -c '
           until docker exec Mickey systemctl is-system-running; do
