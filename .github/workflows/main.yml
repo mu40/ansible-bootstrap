@@ -34,10 +34,8 @@ jobs:
     steps:
     - name: Check-out repository
       uses: actions/checkout@v4
-    - name: Debug permissions
-      run: |
-        pwd -P
-        ls -lh
+    - name: Grant write permissions
+      run: chmod -R +w .
     #- name: Remove Android components
     #  run:  sed -i '/termux-wake-lock/d' bootstrap
     - name: Test bootstrapping
