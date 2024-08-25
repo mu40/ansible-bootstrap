@@ -31,14 +31,14 @@ jobs:
 
   termux:
     runs-on: ubuntu-latest
-    container:
-      image: termux/termux-docker:latest
-      options: --user system:system
     steps:
     - name: Check-out repository
-      uses: actions/checkout@v1
+      uses: actions/checkout@v4
     - name: Test bootstrapping
-      run: sh -x bootstrap
+      run: |
+        docker run \
+          -v ${{ github.workspace }}:/data/data/com.termux/files/home \
+          termux/termux-docker:latest sh -x bootstrap
 
   fedora:
     runs-on: ubuntu-latest
