@@ -22,6 +22,8 @@ jobs:
     if: |
         needs.test.result == 'success' ||
         needs.test.result == 'skipped'
+    permissions:
+      contents: write
     steps:
     - name: Merge into main
       run: |
