@@ -36,8 +36,17 @@ jobs:
       uses: actions/checkout@v4
     - name: Grant write permissions
       run: chmod -R +w .
-    #- name: Remove Android components
-    #  run:  sed -i '/termux-wake-lock/d' bootstrap
+    - name: Debug permission issue
+      run: |
+        pwd -P
+        echo ${{ github.workspace }}
+        ls -lh
+        ls -lh ${{ github.workspace }}
+        docker run \
+          -v ${{ github.workspace }}:/data/data/com.termux/files/home \
+          termux/termux-docker:latest ls -lh
+    - name: Remove Android components
+      run:  sed -i '/termux-wake-lock/d' bootstrap
     - name: Test bootstrapping
       run: |
         docker run \
