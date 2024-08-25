@@ -28,7 +28,7 @@ jobs:
         set -x
         cred=${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}
         repo=https://${cred}@github.com/${{ github.repository }}.git
-        git clone ${repo}
+        git clone ${repo} .
         git remote set-url origin ${repo}
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
