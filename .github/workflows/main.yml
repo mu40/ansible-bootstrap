@@ -35,12 +35,9 @@ jobs:
       uses: vmactions/openbsd-vm@v1
       with:
         run: |
-          pwd
-          ls -lah
-          whoami
-          env
-          uname -a
-          sh =x bootstrap
+          which sh
+          sh -x date
+          sh =x ${{ github.workspace }}/bootstrap
           
   # Module `container` had user permission issues.
   termux:
