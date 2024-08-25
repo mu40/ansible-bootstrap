@@ -36,13 +36,13 @@ jobs:
       uses: actions/checkout@v4
     - name: Create Dockerfile
       run: |
-        {
-           echo 'FROM fedora:latest'
-           echo 'RUN dnf -y update && dnf install -y systemd'
-           echo 'COPY . /mnt'
-           echo 'WORKDIR /mnt'
-           echo 'ENTRYPOINT ["/sbin/init"]'
-        } >Dockerfile
+        echo '
+          FROM fedora:latest
+          RUN dnf -y update && dnf install -y iproute systemd
+          COPY . /mnt
+          WORKDIR /mnt
+          ENTRYPOINT ["/sbin/init"]
+        ' >Dockerfile
     - name: Build Docker image
       run: docker build -t fedora-image .
     - name: Launch systemd
