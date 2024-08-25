@@ -25,7 +25,24 @@ jobs:
       run: mkdir -p /run/openrc/softlevel && openrc default
     - name: Test bootstrapping
       run: sh -x bootstrap
-
+  
+  openbsd:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check-out repository
+      uses: actions/checkout@v4
+    - name: Test in OpenBSD
+      id: test
+      uses: vmactions/openbsd-vm@v1
+      with:
+        run: |
+          pwd
+          ls -lah
+          whoami
+          env
+          uname -a
+          sh =x bootstrap
+          
   # Module `container` had user permission issues.
   termux:
     runs-on: ubuntu-latest
