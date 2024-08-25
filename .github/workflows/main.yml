@@ -35,7 +35,7 @@ jobs:
     - name: Check-out repository
       uses: actions/checkout@v4
     - name: Grant write permissions
-      run: chmod -R +w .
+      run: chmod -R go+w .
     - name: Debug permission issue
       run: |
         pwd -P
