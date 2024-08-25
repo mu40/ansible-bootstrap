@@ -25,12 +25,11 @@ jobs:
     steps:
     - name: Merge into main
       run: |
-        user=${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}
-        repo=${{ github.repository }}
-        git clone https://${user}@github.com/${repo}.git ${repo}
-        cd ${repo}
+        cred="${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}"
+        repo="https://${cred}github.com/${{ github.repository }}.git"
+        git clone "$repo"
+        git remote set-url origin "$repo"
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-        git switch main
         git merge origin/dev --no-ff -m 'Auto-merge dev into main.'
         git push
