@@ -29,6 +29,18 @@ jobs:
     - name: Test bootstrapping
       run: sh -x bootstrap
 
+  termux:
+    runs-on: ubuntu-latest
+    container:
+      image: termux/termux-docker:latest
+    steps:
+    - name: Check-out repository
+      uses: actions/checkout@v4
+    - name: Remove Android components
+      run:  sed -i '/termux-wake-lock/d' bootstrap
+    - name: Test bootstrapping
+      run: sh -x bootstrap
+
   fedora:
     runs-on: ubuntu-latest
     steps:
