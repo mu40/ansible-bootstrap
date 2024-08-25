@@ -1,5 +1,5 @@
 # Test bootstrap script on a few platforms.
-name: Test on PR
+name: Test on pull request
 
 on:
   workflow_dispatch:
