@@ -29,21 +29,21 @@ jobs:
     - name: Test bootstrapping
       run: sh -x bootstrap
 
+  # Module `container` had user permission issues. No /mnt inside container.
   termux:
     runs-on: ubuntu-latest
     steps:
     - name: Check-out repository
       uses: actions/checkout@v4
-    - name: Grant write permissions
-      run: chmod -R go+w .
-    # - name: Remove Android components
-    #   run:  sed -i '/termux-wake-lock/d' bootstrap
+    - name: Remove Android components
+      run:  sed -i '/termux-wake-lock/d' bootstrap
     - name: Test bootstrapping
       run: |
         docker run \
-          -v ${{ github.workspace }}:/data/data/com.termux/files/home \
-          termux/termux-docker:latest sh -x bootstrap
+          -v ${{ github.workspace }}:/tmp \
+          termux/termux-docker:latest sh -x /tmp/bootstrap
 
+  # Must use PID 1 for systemd in container.
   fedora:
     runs-on: ubuntu-latest
     steps:
