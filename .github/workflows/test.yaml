@@ -1,6 +1,8 @@
 # Test bootstrap script on a few platforms.
 name: Test on pull request
 
+# Permit call from another workflow with `workflow_call` and manual runs with
+# `workflow_dispatch`.
 on:
   workflow_call:
   workflow_dispatch:
