@@ -5,7 +5,7 @@ name: Test on push and PR
 # `workflow_dispatch`.
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches:
     - main
   pull_request:
@@ -43,7 +43,7 @@ jobs:
         mem: 4096
         copyback: false
         run: sh -x ${{ github.workspace }}/bootstrap
-          
+
   # Module `container` had user permission issues.
   termux:
     runs-on: ubuntu-latest
