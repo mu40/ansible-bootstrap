@@ -33,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: termux/termux-docker:latest
+      options: --user system:system
     steps:
     - name: Check-out repository
       uses: actions/checkout@v1
