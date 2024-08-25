@@ -32,7 +32,6 @@ jobs:
     - name: Check-out repository
       uses: actions/checkout@v4
     - name: Test in OpenBSD
-      id: test
       uses: vmactions/openbsd-vm@v1
       with:
         run: |
