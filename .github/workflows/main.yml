@@ -34,6 +34,8 @@ jobs:
     - name: Test in OpenBSD
       uses: vmactions/openbsd-vm@v1
       with:
+        mem: 4096
+        copyback: false
         run: sh -x ${{ github.workspace }}/bootstrap
           
   # Module `container` had user permission issues.
