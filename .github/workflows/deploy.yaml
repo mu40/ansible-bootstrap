@@ -1,5 +1,5 @@
 # vim: ts=2 sw=2 et
-name: Auto-merge
+name: Test and merge on push
 
 on:
   push:
@@ -19,11 +19,13 @@ jobs:
       uses: actions/checkout@v4
     - name: Test unless merging PR
       uses: ./.github/workflows/test.yaml
-      if: ${{ github.event.action != 'synchronize' }}
+      if: |
+        github.event_name != 'pull_request' ||
+        github.event.action == 'synchronize'
     - name: Merge into main
       if: |
-          github.event.action == 'push' &&
-          github.event.head_ref == 'refs/heads/dev'
+        github.event_name == 'push' &&
+        github.event.head_ref == 'refs/heads/dev'
       run: |
         git checkout main
         git merge dev --no-ff -m 'Auto-merge dev into main.'
