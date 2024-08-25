@@ -34,7 +34,7 @@ jobs:
     - name: Test in OpenBSD
       uses: vmactions/openbsd-vm@v1
       with:
-        run: sh =x ${{ github.workspace }}/bootstrap
+        run: sh -x ${{ github.workspace }}/bootstrap
           
   # Module `container` had user permission issues.
   termux:
