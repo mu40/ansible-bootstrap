@@ -37,8 +37,6 @@ jobs:
     steps:
     - name: Check-out repository
       uses: actions/checkout@v1
-    - name: Remove Android components
-      run:  sudo sed -i '/termux-wake-lock/d' bootstrap
     - name: Test bootstrapping
       run: sh -x bootstrap
 
