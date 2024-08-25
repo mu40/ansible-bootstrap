@@ -29,5 +29,5 @@ jobs:
       run: |
         git fetch --all
         git switch main
-        git merge dev --no-ff -m 'Auto-merge dev into main.'
+        git merge dev --no-ff --allow-unrelated-histories -m 'Auto-merge dev into main.'
         git push origin main
