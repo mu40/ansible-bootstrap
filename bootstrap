@@ -20,7 +20,7 @@ done
 case "$os" in
     /bsd)
         pkg_add -u
-        pkg_add python3
+        pkg_add curl python3
     ;;
     /etc/arch-release)
         pacman --noconfirm -Syu
