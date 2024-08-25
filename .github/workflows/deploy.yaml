@@ -27,7 +27,6 @@ jobs:
     steps:
     - name: Merge into main
       run: |
-        set -x
         cred=${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}
         repo=https://${cred}@github.com/${{ github.repository }}.git
         git clone ${repo} .
