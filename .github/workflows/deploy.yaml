@@ -33,5 +33,10 @@ jobs:
       run: |
         git fetch --all
         git switch main
-        git merge dev --no-ff --allow-unrelated-histories -m 'Auto-merge dev into main.'
+        git branch -a
+        git remote -v
+        git status
+        git log | head
+        git reflog | head
+        git merge dev --no-ff -m 'Auto-merge dev into main.'
         git push origin main
