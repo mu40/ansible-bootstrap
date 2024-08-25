@@ -20,7 +20,7 @@ The script will:
 
 ## Usage
 
-As root, run:
+As `root`, run:
 
 ```sh
 curl -L bootstrap.malte.cz | sh
