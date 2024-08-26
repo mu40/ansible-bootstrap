@@ -1,0 +1,5 @@
+# Avoid following sourced files that are absent when linting.
+disable=SC1091
+
+# Invoke subshells separately to fail on non-zero return codes.
+enable=SC2312

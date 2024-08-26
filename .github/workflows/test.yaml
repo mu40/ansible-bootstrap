@@ -14,19 +14,15 @@ on:
 
 jobs:
 
-  # SC2312: invoke subshells separately to fail on non-zero return codes.
-  # SC1091: avoid following sourced files that are absent when linting.
   linter:
     runs-on: ubuntu-latest
     steps:
     - name: Check-out repository
       uses: actions/checkout@v4
-    - name: Lint with ShellCheck
-      uses: ludeeus/action-shellcheck@master
-      env:
-        SHELLCHECK_OPTS: -s sh -e SC1091 -o SC2312
-      with:
-        additional_files: bootstrap
+    - name: Install ShellCheck
+      run: apt-get update && apt-get install -y shellcheck
+    - name: Lint the script
+      run: shellcheck bootstrap
 
   alpine:
     runs-on: ubuntu-latest
