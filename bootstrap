@@ -48,16 +48,16 @@ esac
 
 # SSH public key.
 d=~/.ssh
-mkdir -p $d
-curl -L "https://github.com/$github_user.keys" >$d/authorized_keys
-chmod -R u=rwX,go= $d
+mkdir -p "$d"
+curl -L "https://github.com/$github_user.keys" >"$d/authorized_keys"
+chmod -R u=rwX,go= "$d"
 
 
 # SSH root login. Termux hard-codes non-root user.
 if [ "$os" != /data/data/com.termux ]; then
     f=/etc/ssh/sshd_config
-    [ -f $f.bak ] || cp $f $f.bak
-    sed 's/^#*\(PermitRootLogin\) [a-z-]*$/\1 prohibit-password/' $f.bak >$f
+    [ -f "$f.bak" ] || cp "$f" "$f".bak
+    sed 's/^#*\(PermitRootLogin\) [a-z-]*$/\1 prohibit-password/' "$f.bak" >"$f"
 fi
 
 
@@ -80,8 +80,8 @@ case "$os" in
         rc-service sshd restart
     ;;
     /data/data/com.termux)
-        . $PREFIX/etc/profile.d/start-services.sh
-        until [ -e $SVDIR/sshd/supervise/ok ]; do sleep 1; done
+        . "$PREFIX/etc/profile.d/start-services.sh"
+        until [ -e "$SVDIR/sshd/supervise/ok" ]; do sleep 1; done
         sv-enable sshd
         termux-wake-lock
     ;;
