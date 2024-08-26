@@ -46,11 +46,12 @@ case "$os" in
 esac
 
 
-# SSH public key.
+# SSH public key. Generate host keys if needed.
 d=~/.ssh
 mkdir -p "$d"
 curl -L "https://github.com/$github_user.keys" >"$d/authorized_keys"
 chmod -R u=rwX,go= "$d"
+ssh-keygen -A
 
 
 # SSH root login. Termux hard-codes non-root user. Test configuration.
@@ -62,14 +63,13 @@ if [ "$os" != /data/data/com.termux ]; then
 fi
 
 
-# SSH daemon. Generate host keys if needed. Termux starts runit by sourcing
-# $PREFIX/etc/profile.d/start-services.sh. Manually start it to launch sshd
-# without Termux restart. Preferred over directly invoking `sshd` so Ansible's
-# service module can manage the daemon. Enable and start with `sv-enable`, as
-# it will only run while Termux is running. Acquire wake lock to ensure we can
-# connect: release it with `termux-wake-unlock` or in the notification panel.
-# Using `sv` will require restart to export SVDIR and LOGDIR.
-ssh-keygen -A
+# SSH daemon. Termux sources $PREFIX/etc/profile.d/start-services.sh to start
+# runit. Manually start it to launch sshd without Termux restart. Preferred
+# over directly invoking `sshd` so Ansible's service module can manage the
+# daemon. Enable and start with `sv-enable`, as it will only run while Termux
+# is running. Acquire wake lock to ensure we can connect: release it with
+# `termux-wake-unlock` or in the notification panel.  Using `sv` will require
+# restart to export SVDIR and LOGDIR.
 case "$os" in
     /bsd)
         rcctl restart sshd
