@@ -25,6 +25,8 @@ jobs:
       uses: ludeeus/action-shellcheck@master
       env:
         SHELLCHECK_OPTS: -s sh -e SC1091 -o SC2312
+      with:
+        additional_files: bootstrap
 
   alpine:
     runs-on: ubuntu-latest
