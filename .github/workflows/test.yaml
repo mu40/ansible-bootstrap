@@ -20,7 +20,7 @@ jobs:
     - name: Check-out repository
       uses: actions/checkout@v4
     - name: Install ShellCheck
-      run: apt-get update && apt-get install -y shellcheck
+      run: sudo apt-get update && sudo apt-get install -y shellcheck
     - name: Lint the script
       run: shellcheck bootstrap
 
