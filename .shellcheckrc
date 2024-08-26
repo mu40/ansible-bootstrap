@@ -1,5 +1,7 @@
-# Avoid following sourced files that are absent when linting.
-disable=SC1091
+enable=all
 
-# Invoke subshells separately to fail on non-zero return codes.
-enable=SC2312
+# SC1091: Avoid following sourced files that are absent when linting.
+# SC2154: Do not warn about unassigned (OS-specific environment) variables.
+# SC2249: Do not suggest adding a default `*)` case.
+# SC2250: Do not warn about optional braces around variables.
+disable=SC1091,SC2154,SC2249,SC2250
