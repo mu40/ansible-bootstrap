@@ -91,7 +91,8 @@ esac
 
 # Username and IPs. Termux does not set $USER. Skip loopback device.
 {
-    echo "user: $(whoami)"
+    user=$(whoami)
+    echo "user: $user"
     if command -v ip >/dev/null; then
         ip a | awk '/^[^\t ]/ {f=$2} /inet / {sub(/\/.*/,"",$2); print f,$2}'
     else
