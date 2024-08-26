@@ -57,7 +57,7 @@ chmod -R u=rwX,go= "$d"
 if [ "$os" != /data/data/com.termux ]; then
     f=/etc/ssh/sshd_config
     [ -f "$f.bak" ] || cp "$f" "$f".bak
-    sed 's/^#*\(PermitRootLogin\).*$/\1prohibit-password/' "$f.bak" >"$f"
+    sed 's/^#*\(PermitRootLogin\) .*$/\1 prohibit-password/' "$f.bak" >"$f"
     sshd -t
 fi
 
