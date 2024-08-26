@@ -16,7 +16,7 @@ for f in /bsd /etc/*-release /data/data/com.termux; do
 done
 
 
-# Requirements. Save 0.5 GB with `--no-install-recommends.
+# Requirements. Save 0.5 GB with `--no-install-recommends`.
 case "$os" in
     /bsd)
         pkg_add -u
@@ -53,11 +53,12 @@ curl -L "https://github.com/$github_user.keys" >"$d/authorized_keys"
 chmod -R u=rwX,go= "$d"
 
 
-# SSH root login. Termux hard-codes non-root user.
+# SSH root login. Termux hard-codes non-root user. Test configuration.
 if [ "$os" != /data/data/com.termux ]; then
     f=/etc/ssh/sshd_config
     [ -f "$f.bak" ] || cp "$f" "$f".bak
-    sed 's/^#*\(PermitRootLogin\) [a-z-]*$/\1 prohibit-password/' "$f.bak" >"$f"
+    sed 's/^#*\(PermitRootLogin\).*$/\1prohibit-password/' "$f.bak" >"$f"
+    sshd -t
 fi
 
 
