@@ -26,6 +26,19 @@ As `root`, run:
 curl -L bootstrap.malte.cz | sh
 ```
 
+If `curl` is not installed:
+
+```sh
+wget -O- bootstrap.malte.cz | sh
+
+```
+
+On OpenBSD:
+
+```sh
+ftp -o- https://bootstrap.malte.cz | sh
+```
+
 
 ## Other users
 
