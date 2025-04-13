@@ -1,9 +1,8 @@
-#!/bin/sh
+#!/bin/sh -e
 
 # Set up a fresh system with the minimum requirements for remote configuration
 # with Ansible. Except for non-root Termux, start with root user.
 
-set -e
 github_user=${1:-'mu40'}
 
 
@@ -20,7 +19,7 @@ done
 case "$os" in
     /bsd)
         pkg_add -u
-        pkg_add curl python3
+        pkg_add curl python
     ;;
     /etc/arch-release)
         pacman --noconfirm -Syu
