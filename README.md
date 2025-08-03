@@ -51,7 +51,5 @@ curl -L bootstrap.malte.cz | sh -s -- otto
 
 ## Security
 
-The script is not intended for public consumption or to ensure a secure SSH setup.
-Executing code from an untrusted source, especially as root, is risky.
-It might, for example, delete your data or send it elsewhere.
-The security of your machine and your data is your responsibility.
+The script is not intended for public consumption or a secure SSH setup.
+Executing code from an untrusted source is risky, especially as root.
