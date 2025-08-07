@@ -1,0 +1,39 @@
+name: Analyze shell scripts
+
+# Permit call from another workflow with `workflow_call` and manual runs with
+# `workflow_dispatch`.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+    paths:
+      - '**/*.sh'
+      - .shellcheckrc
+      - bootstrap
+  pull_request:
+    branches:
+    - main
+    paths:
+      - '**/*.sh'
+      - .shellcheckrc
+      - bootstrap
+
+jobs:
+  linter:
+    name: Lint with ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check-out repository
+        uses: actions/checkout@v4
+      - name: Install ShellCheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Find shell scripts
+        run: |
+          git ls-files -z |
+            xargs -0 file -i |
+            awk -F: '/x-shellscript/ { print $(NF-1) }' |
+            tr '\n' '\0' |
+            tee $RUNNER_TEMP/scripts
+      - name: Lint shell scripts
+        run: xargs -0 shellcheck <$RUNNER_TEMP/scripts
