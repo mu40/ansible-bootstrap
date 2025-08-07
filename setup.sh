@@ -12,7 +12,7 @@ if [ ! -d "$ENV" ]; then
 
     # Packages. Package passlib required for `password_hash` filter.
     pip install -U pip setuptools wheel
-    pip install shellcheck-py typos
+    pip install shellcheck-py typos yamllint
 fi
 
 
