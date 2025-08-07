@@ -1,10 +1,10 @@
 ---
 name: Spell-check repository
 
-on:
+"on":
   workflow_dispatch: {}
-  push:
-  pull_request:
+  pull_request: {}
+  push: {}
 
 env:
   CLICOLOR: 1

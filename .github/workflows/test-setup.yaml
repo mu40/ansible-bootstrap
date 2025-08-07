@@ -1,14 +1,10 @@
 ---
 name: Test environment setup
 
-# Permit call from another workflow with `workflow_call` and manual runs with
-# `workflow_dispatch`.
-on:
+"on":
   workflow_dispatch: {}
+  pull_request: {}
   push:
-    paths:
-      - setup.sh
-  pull_request:
     paths:
       - setup.sh
 

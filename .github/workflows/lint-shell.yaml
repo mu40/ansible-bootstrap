@@ -1,16 +1,10 @@
 ---
 name: Analyze shell scripts
 
-# Permit call from another workflow with `workflow_call` and manual runs with
-# `workflow_dispatch`.
-on:
+"on":
   workflow_dispatch: {}
+  pull_request: {}
   push:
-    paths:
-      - '**/*.sh'
-      - .shellcheckrc
-      - bootstrap
-  pull_request:
     paths:
       - '**/*.sh'
       - .shellcheckrc
