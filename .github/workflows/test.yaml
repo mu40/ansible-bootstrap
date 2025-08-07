@@ -1,9 +1,10 @@
+---
 name: Test bootstrapping
 
 # Permit call from another workflow with `workflow_call` and manual runs with
 # `workflow_dispatch`.
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}
   push:
     paths:
       - bootstrap
@@ -52,7 +53,7 @@ jobs:
       - name: Check-out repository
         uses: actions/checkout@v4
       - name: Remove Android components
-        run:  sed -i '/termux-wake-lock/d' bootstrap
+        run: sed -i '/termux-wake-lock/d' bootstrap
       - name: Test bootstrapping
         run: |
           docker run \
@@ -87,7 +88,7 @@ jobs:
       - name: Wait for systemd
         run: timeout 30 sh -c '
             until docker exec Mickey systemctl is-system-running; do
-              sleep 3; 
+              sleep 3;
             done
           '
       - name: Test bootstrapping

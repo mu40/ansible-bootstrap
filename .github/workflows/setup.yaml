@@ -1,0 +1,23 @@
+---
+name: Test environment setup
+
+# Permit call from another workflow with `workflow_call` and manual runs with
+# `workflow_dispatch`.
+on:
+  workflow_dispatch: {}
+  push:
+    paths:
+      - setup.sh
+  pull_request:
+    paths:
+      - setup.sh
+
+jobs:
+  setup:
+    name: Set up environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check-out repository
+        uses: actions/checkout@v4
+      - name: Run setup script
+        run: sh -x setup.sh
