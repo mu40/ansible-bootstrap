@@ -18,7 +18,7 @@ fi
 
 # Hooks.
 d="hooks"
-[ -d "$d" ] && cp -v "$d"/* ".git/$d"
+[ -d "$d" ] && cp -v "$d"/* .git/hooks
 
 
 # Environment manager.
