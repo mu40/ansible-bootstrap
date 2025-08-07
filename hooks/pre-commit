@@ -1,0 +1,50 @@
+#!/bin/sh -e
+
+# Run spell checker and linters.
+
+
+# Temporary storage. Double quotes will trap the current variable value.
+# shellcheck disable=SC2064
+{
+    d=$(mktemp -d "/tmp/$(basename "$0").XXXXXX")
+    trap "rm -rf -- '$d'" EXIT
+    trap exit INT TERM
+}
+
+
+# Relevant files. BusyBox's `awk` cannot print null characters.
+list() { git diff -z --staged --name-only --diff-filter=ACMRT -- "$@" ; }
+staged="$d/staged"
+yaml="$d/yaml"
+shell="$d/shell"
+list                  >"$staged"
+list '*.yaml' '*.yml' >"$yaml"
+xargs -0r file -i <"$staged" |
+    awk -F: '/x-shellscript/ { print $(NF-1) }' |
+    tr '\n' '\0' >"$shell"
+
+
+# Staged tree. For partial commits, do not run tests on working tree.
+git checkout-index --prefix="$d/" -a
+cd "$d"
+
+
+# Spell check.
+if [ -s "$staged" ]; then
+    echo "Spell-checking tree"
+    xargs -0 typos <"$staged"
+fi
+
+
+# YAML syntax.
+if [ -s "$yaml" ]; then
+    echo "Validating YAML syntax"
+    xargs -0 yamllint -s <"$yaml"
+fi
+
+
+# Shell check.
+if [ -s "$shell" ]; then
+    echo "Linting shell scripts"
+    xargs -0 shellcheck <"$shell"
+fi

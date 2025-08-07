@@ -1,5 +1,5 @@
 ---
-name: Validate YAML files
+name: Validate YAML syntax
 
 "on":
   workflow_dispatch: {}
