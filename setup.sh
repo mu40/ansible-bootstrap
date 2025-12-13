@@ -2,13 +2,14 @@
 
 # Setup up virtual Python envirironmet for linting and Git hooks.
 
-ENV='.venv'
+set -e
+venv_dir='.venv'
 
 
 # Virtual environment.
-if [ ! -d "$ENV" ]; then
-    python3 -m venv "$ENV"
-    . "$ENV/bin/activate"
+if [ ! -d "$venv_dir/bin" ]; then
+    python3 -m venv "$venv_dir"
+    . "$venv_dir/bin/activate"
 
     # Packages. Package passlib required for `password_hash` filter.
     pip install -U pip setuptools wheel
@@ -23,5 +24,9 @@ d="hooks"
 
 # Environment manager.
 cat >.envrc <<EOF
-[ -d "$ENV" ] && . "$ENV/bin/activate"
+venv_dir='$venv_dir'
+if [ -d "\$venv_dir/bin" ]; then
+    export VIRTUAL_ENV="\$PWD/\$venv_dir"
+    PATH_add "\$VIRTUAL_ENV/bin"
+fi
 EOF
