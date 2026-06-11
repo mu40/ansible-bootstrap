@@ -44,8 +44,3 @@ Assuming your GitHub username is `otto`, authorize root login via SSH with your 
 ```sh
 curl -L bootstrap.malte.cz | sh -s -- otto
 ```
-
-## Security
-
-The script is not intended for public consumption or a secure SSH setup.
-Executing code from an untrusted source is risky, especially as root.
