@@ -8,7 +8,6 @@ The script will:
 - Set up key-based SSH root login
 - Display local IP addresses
 
-
 ## Supported platforms
 
 - OpenBSD
@@ -16,7 +15,6 @@ The script will:
 - Alpine Linux
 - Fedora Linux
 - Termux
-
 
 ## Usage
 
@@ -39,7 +37,6 @@ On OpenBSD:
 ftp -o- https://bootstrap.malte.cz | sh
 ```
 
-
 ## Other users
 
 Assuming your GitHub username is `otto`, authorize root login via SSH with your own keys:
@@ -47,7 +44,6 @@ Assuming your GitHub username is `otto`, authorize root login via SSH with your 
 ```sh
 curl -L bootstrap.malte.cz | sh -s -- otto
 ```
-
 
 ## Security
 
