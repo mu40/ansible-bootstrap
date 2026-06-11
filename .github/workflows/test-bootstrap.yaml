@@ -1,20 +1,21 @@
 ---
 name: Test bootstrapping
 
-# Permit call from another workflow with `workflow_call` and manual runs with
-# `workflow_dispatch`.
+# Enable manual runs with `workflow_dispatch`.
 "on":
   workflow_dispatch: {}
   pull_request:
     paths:
       - bootstrap
+      - .github/workflows/test-bootstrap.yaml
   push:
     paths:
       - bootstrap
+      - .github/workflows/test-bootstrap.yaml
 
 jobs:
   alpine:
-    name: Test on Alpine Linux
+    name: Alpine Linux
     runs-on: ubuntu-latest
     container:
       image: alpine:latest
@@ -22,23 +23,23 @@ jobs:
         - /sys/fs/cgroup
     steps:
       - name: Check-out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Install OpenRC
         run: apk add openrc
       - name: Start OpenRC
         run: mkdir -p /run/openrc/softlevel && openrc default
-      - name: Test bootstrapping
+      - name: Run script
         run: sh -x bootstrap
 
   # Restrict default 6 GB of RAM. Files at same path inside the VM as outside.
   # Do not copy unneeded files back; we override the root SSH keys.
   openbsd:
-    name: Test on OpenBSD
+    name: OpenBSD
     runs-on: ubuntu-latest
     steps:
       - name: Check-out repository
-        uses: actions/checkout@v4
-      - name: Test in OpenBSD
+        uses: actions/checkout@v6
+      - name: Run script
         uses: vmactions/openbsd-vm@v1
         with:
           mem: 4096
@@ -47,14 +48,14 @@ jobs:
 
   # Module `container` had user permission issues.
   termux:
-    name: Test on Termux
+    name: Termux
     runs-on: ubuntu-latest
     steps:
       - name: Check-out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Remove Android components
         run: sed -i '/termux-wake-lock/d' bootstrap
-      - name: Test bootstrapping
+      - name: Run script
         run: |
           docker run \
             -v ${{ github.workspace }}:/mnt \
@@ -62,11 +63,11 @@ jobs:
 
   # Must use PID 1 for systemd in container.
   fedora:
-    name: Test on Fedora
+    name: Fedora
     runs-on: ubuntu-latest
     steps:
       - name: Check-out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Create Dockerfile
         run: |
           echo '
@@ -91,5 +92,5 @@ jobs:
               sleep 3;
             done
           '
-      - name: Test bootstrapping
+      - name: Run script
         run: docker exec Mickey sh -x bootstrap
