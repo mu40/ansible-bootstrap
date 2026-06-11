@@ -15,10 +15,12 @@
 # Relevant files. BusyBox's `awk` cannot print null characters.
 list() { git diff -z --staged --name-only --diff-filter=ACMRT -- "$@" ; }
 staged="$d/staged"
+markdown="$d/md"
 yaml="$d/yaml"
 shell="$d/shell"
-list                  >"$staged"
-list '*.yaml' '*.yml' >"$yaml"
+list                     >"$staged"
+list '*.yaml' '*.yml'    >"$yaml"
+list '*.md' '*.markdown' >"$markdown"
 xargs -0r file -i <"$staged" |
     awk -F: '/x-shellscript/ { print $(NF-1) }' |
     tr '\n' '\0' >"$shell"
@@ -29,21 +31,21 @@ git checkout-index --prefix="$d/" -a
 cd "$d"
 
 
-# Spell check.
 if [ -s "$staged" ]; then
     echo "Spell-checking tree"
     xargs -0 typos <"$staged"
 fi
 
+if [ -s "$markdown" ]; then
+    echo "Validating Markdown syntax"
+    xargs -0 pymarkdown scan <"$markdown"
+fi
 
-# YAML syntax.
 if [ -s "$yaml" ]; then
     echo "Validating YAML syntax"
     xargs -0 yamllint -s <"$yaml"
 fi
 
-
-# Shell check.
 if [ -s "$shell" ]; then
     echo "Linting shell scripts"
     xargs -0 shellcheck <"$shell"

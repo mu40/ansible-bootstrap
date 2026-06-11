@@ -13,7 +13,7 @@ if [ ! -d "$venv_dir/bin" ]; then
 
     # Packages. Package passlib required for `password_hash` filter.
     pip install -U pip setuptools wheel
-    pip install shellcheck-py typos yamllint
+    pip install pymarkdownlnt shellcheck-py typos yamllint
 fi
 
 

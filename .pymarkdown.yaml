@@ -1,0 +1,8 @@
+---
+mode:
+  strict-config: true
+plugins:
+  MD013:
+    enabled: false  # line-length
+  MD024:
+    enabled: false  # no-duplicate-heading
