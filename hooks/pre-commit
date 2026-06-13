@@ -32,21 +32,21 @@ cd "$d"
 
 
 if [ -s "$staged" ]; then
-    echo "Spell-checking tree"
+    echo "Running spell checker"
     xargs -0 typos <"$staged"
 fi
 
 if [ -s "$markdown" ]; then
-    echo "Validating Markdown syntax"
+    echo "Running Markdown linter"
     xargs -0 pymarkdown scan <"$markdown"
 fi
 
 if [ -s "$yaml" ]; then
-    echo "Validating YAML syntax"
+    echo "Running YAML linter"
     xargs -0 yamllint -s <"$yaml"
 fi
 
 if [ -s "$shell" ]; then
-    echo "Linting shell scripts"
+    echo "Running shell linter"
     xargs -0 shellcheck <"$shell"
 fi
