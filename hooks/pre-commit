@@ -27,8 +27,8 @@ xargs -0r file -i <"$staged" |
 
 
 # Staged tree. For partial commits, do not run tests on working tree.
-git checkout-index --prefix="$d/" -a
-cd "$d"
+git checkout-index --prefix="$d/tree/" -a
+cd "$d/tree"
 
 
 if [ -s "$staged" ]; then
