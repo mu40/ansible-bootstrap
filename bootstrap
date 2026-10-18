@@ -48,7 +48,8 @@ esac
 # SSH public key. Generate host keys if needed.
 d=~/.ssh
 mkdir -p "$d"
-curl -L "https://github.com/$github_user.keys" >"$d/authorized_keys"
+curl -fL "https://github.com/$github_user.keys" >"$d/authorized_keys"
+[ -s "$d/authorized_keys" ]
 chmod -R u=rwX,go= "$d"
 ssh-keygen -A
 
