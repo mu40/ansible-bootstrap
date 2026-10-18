@@ -22,7 +22,7 @@ list                     >"$staged"
 list '*.yaml' '*.yml'    >"$yaml"
 list '*.md' '*.markdown' >"$markdown"
 xargs -0r file <"$staged" |
-    awk -F: '/shell script/ { print $(NF-1) }' |
+    awk '/shell script/ { sub(/:[^:]*$/, ""); print }' |
     tr '\n' '\0' >"$shell"
 
 

@@ -37,7 +37,7 @@ jobs:
         run: |
           git ls-files -z |
             xargs -0 file |
-            awk -F: '/shell script/ { print $(NF-1) }' |
+            awk '/shell script/ { sub(/:[^:]*$/, ""); print }' |
             tr '\n' '\0' |
             tee $RUNNER_TEMP/scripts
       - name: Run linter
