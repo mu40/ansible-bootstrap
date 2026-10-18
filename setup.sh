@@ -7,17 +7,16 @@ cd "$(dirname "$0")"
 venv_dir='.venv'
 
 
-# Virtual environment. Rebuild if broken, for example after a Python upgrade
-# or an interrupted install.
-if ! "$venv_dir/bin/python" -c 'import pip, pymarkdown, yamllint' 2>/dev/null
-then
+# Virtual environment. Rebuild if broken, for example after a Python upgrade.
+if ! "$venv_dir/bin/python" -c 'import pip' 2>/dev/null; then
     python3 -m venv --clear "$venv_dir"
-    . "$venv_dir/bin/activate"
-
-    # Packages.
-    pip install -U pip
-    pip install pymarkdownlnt shellcheck-py typos yamllint
+    "$venv_dir/bin/python" -m pip install -U pip
 fi
+. "$venv_dir/bin/activate"
+
+
+# Packages.
+pip install -q pymarkdownlnt shellcheck-py typos yamllint
 
 
 # Hooks.
