@@ -21,14 +21,13 @@ The script will:
 As `root`, run:
 
 ```sh
-curl -L bootstrap.malte.cz | sh
+curl -L https://bootstrap.malte.cz | sh
 ```
 
 If `curl` is not installed:
 
 ```sh
 wget -O- bootstrap.malte.cz | sh
-
 ```
 
 On OpenBSD:
@@ -42,5 +41,5 @@ ftp -o- https://bootstrap.malte.cz | sh
 Assuming your GitHub username is `otto`, authorize root login via SSH with your own keys:
 
 ```sh
-curl -L bootstrap.malte.cz | sh -s -- otto
+curl -L https://bootstrap.malte.cz | sh -s -- otto
 ```
