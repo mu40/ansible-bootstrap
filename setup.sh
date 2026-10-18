@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Setup up virtual Python envirironmet for linting and Git hooks.
+# Set up a virtual Python environment for linting and Git hooks.
 
 set -e
 venv_dir='.venv'
