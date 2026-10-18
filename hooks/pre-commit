@@ -1,6 +1,8 @@
-#!/bin/sh -e
+#!/bin/sh
 
 # Run spell checker and linters.
+
+set -e
 
 
 # Temporary storage. Double quotes will trap the current variable value.
