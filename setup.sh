@@ -22,7 +22,9 @@ fi
 
 # Hooks.
 if [ -d .git/hooks ]; then
-    cp -v hooks/* .git/hooks
+    for f in hooks/*; do
+        ln -vsfn "../../$f" ".git/hooks/${f#hooks/}"
+    done
     if f=$(command -v commit-msg.py 2>/dev/null); then
         ln -vsfn "$f" .git/hooks/commit-msg
     fi
