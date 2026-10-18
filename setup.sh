@@ -11,7 +11,7 @@ if [ ! -d "$venv_dir/bin" ]; then
     python3 -m venv "$venv_dir"
     . "$venv_dir/bin/activate"
 
-    # Packages. Package passlib required for `password_hash` filter.
+    # Packages.
     pip install -U pip setuptools wheel
     pip install pymarkdownlnt shellcheck-py typos yamllint
 fi
