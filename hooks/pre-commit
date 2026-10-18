@@ -21,8 +21,8 @@ shell="$d/shell"
 list                     >"$staged"
 list '*.yaml' '*.yml'    >"$yaml"
 list '*.md' '*.markdown' >"$markdown"
-xargs -0r file -i <"$staged" |
-    awk -F: '/x-shellscript/ { print $(NF-1) }' |
+xargs -0r file <"$staged" |
+    awk -F: '/shell script/ { print $(NF-1) }' |
     tr '\n' '\0' >"$shell"
 
 
