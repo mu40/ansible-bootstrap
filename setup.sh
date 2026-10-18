@@ -16,7 +16,7 @@ then
     . "$venv_dir/bin/activate"
 
     # Packages.
-    pip install -U pip setuptools wheel
+    pip install -U pip
     pip install pymarkdownlnt shellcheck-py typos yamllint
 fi
 
