@@ -3,6 +3,7 @@
 # Run spell checker and linters.
 
 set -e
+PATH="${VIRTUAL_ENV:-$PWD/.venv}/bin:$PATH"
 
 
 # Temporary storage. Double quotes will trap the current variable value.
