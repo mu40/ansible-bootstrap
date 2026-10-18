@@ -11,8 +11,7 @@ venv_dir='.venv'
 # or an interrupted install.
 if ! "$venv_dir/bin/python" -c 'import pip, pymarkdown, yamllint' 2>/dev/null
 then
-    rm -rf "$venv_dir"
-    python3 -m venv "$venv_dir"
+    python3 -m venv --clear "$venv_dir"
     . "$venv_dir/bin/activate"
 
     # Packages.
