@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Set up a virtual Python environment for linting and Git hooks.
+# Set up virtual Python environment for linting and Git hooks.
 
 set -e
 cd "$(dirname "$0")"
@@ -16,7 +16,7 @@ fi
 
 
 # Packages.
-pip install -q pymarkdownlnt shellcheck-py typos yamllint
+pip install pymarkdownlnt shellcheck-py typos yamllint
 
 
 # Hooks.
@@ -24,9 +24,6 @@ if [ -d .git/hooks ]; then
     for f in hooks/*; do
         ln -sfn "../../$f" ".git/hooks/${f#hooks/}"
     done
-    if f=$(command -v commit-msg.py 2>/dev/null); then
-        ln -sfn "$f" .git/hooks/commit-msg
-    fi
 fi
 
 
