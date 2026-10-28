@@ -58,7 +58,7 @@ ssh-keygen -A
 # SSH root login. Termux hard-codes non-root user. Test configuration.
 if [ "$os" != /data/data/com.termux ]; then
     f=/etc/ssh/sshd_config
-    [ -f "$f.bak" ] || cp "$f" "$f".bak
+    [ -f "$f.bak" ] || cp "$f" "$f.bak"
     sed 's/^#*\(PermitRootLogin\) .*$/\1 prohibit-password/' "$f.bak" >"$f"
     sshd -t
 fi
@@ -92,7 +92,7 @@ esac
 
 # Username and IPs. Termux does not set $USER. Skip loopback device.
 {
-    user=$(whoami)
+    user=$(id -un)
     echo "user: $user"
     if command -v ip >/dev/null; then
         ip a | awk '/^[^\t ]/ {f=$2} /inet / {sub(/\/.*/,"",$2); print f,$2}'
