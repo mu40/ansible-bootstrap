@@ -6,13 +6,10 @@ set -e
 PATH="${VIRTUAL_ENV:-$PWD/.venv}/bin:$PATH"
 
 
-# Temporary storage. Double quotes will trap the current variable value.
-# shellcheck disable=SC2064
-{
-    d=$(mktemp -d "/tmp/$(basename "$0").XXXXXX")
-    trap "rm -rf -- '$d'" EXIT
-    trap exit INT TERM
-}
+# Temporary storage.
+d=$(mktemp -d "/tmp/$(basename "$0").XXXXXX")
+trap 'rm -rf -- "$d"' EXIT
+trap exit INT TERM
 
 
 # Relevant files. BusyBox's `awk` cannot print null characters.
